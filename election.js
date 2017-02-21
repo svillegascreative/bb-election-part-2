@@ -10,12 +10,21 @@ $(document).ready(function() {
 
     $.each(candidates, function(index, data) {
       var listItem = $('<li>');
-      $('<h3>').html(data.name).appendTo(listItem);
-      $('<span>').html(data.votes).appendTo(listItem);
-      $('<form>').attr('method', 'POST')
-                 .attr('action', 'https://bb-election-api.herokuapp.com/vote')
-                 .appendTo(listItem);
+      $('<strong>').html(data.name + ': ').appendTo(listItem);
+      $('<span>').html(data.votes + ' votes').appendTo(listItem);
 
+      var voteForm = $('<form>').css('margin', '10px 0 20px')
+      voteForm.attr('method', 'POST')
+              .attr('action', 'https://bb-election-api.herokuapp.com/vote');
+      $('<input>').attr('type', 'hidden')
+                  .attr('name', 'id')
+                  .attr('value', data.id)
+                  .appendTo(voteForm);
+      $('<input>').attr('type', 'submit')
+                  .attr('value', 'Vote for ' + data.name + '!')
+                  .appendTo(voteForm);
+
+      voteForm.appendTo(listItem);
       $('#candidates').append(listItem);
     })
   });
